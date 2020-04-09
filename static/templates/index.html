@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <title>疫情数据</title>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
-    <script src="{% static 'js/list.js' %}"></script>
-    <script src="{% static 'js/getdata.js' %}"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/maps/china.js"></script>
 </head>
 
 <body>
@@ -42,12 +42,13 @@
         <div class="number"></div>
         <div class="text">境外输入</div>
     </div>
-
-<iframe id="1" src="map_api" width="48%" height="620px" frameborder="0"></iframe>
-<iframe id="2" src="pie_api" width="48%" height="620px" frameborder="0"></iframe>
-    <ul class='list'>
-
-    </ul>
+    <div id="map" class="chart-container" style="width:48%; height:580px;float:left;"></div>
+    <div id="pie" class="pie-container" style="width:48%; height:580px;float:left;"></div>
+    <h1 style=height:20px;width:96%;text-align:center;>数据列表</h1>
+    <ul class='list'></ul>
 </div>
+
+    <script src="{% static 'js/charts.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
