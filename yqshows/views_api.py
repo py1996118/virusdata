@@ -1,9 +1,8 @@
+from django.views.decorators.csrf import csrf_exempt
+
 from yqshows.models import Details, TotalAdd, Province
 from django.http import JsonResponse
 from django.shortcuts import HttpResponse
-from pyecharts.charts import Map, Geo, Pie, Page, Bar
-from pyecharts.globals import ThemeType#主题
-from pyecharts import options as opts
 
 
 def TotalAdd_api(req):
@@ -37,15 +36,24 @@ def Province_api(req):
     #数据为空返回错误
     if p_data == None:
         return JsonResponse({'status': 10021, 'message': 'parameter error'})
-    data = []
+    data1 = []
+    data2 = []
+    datap = []
     if p_data:
         for i in p_data:
-            datas = {}
-            datas['name'] = i.province
-            datas['value'] = i.confirm
-            data.append(datas)
+            data3 = {}
+            data4 = {}
+            data3['name'] = i.province
+            data4['name'] = i.province
+            data3['value'] = i.confirm
+            data4['value'] = i.confirm_now
+            data1.append(data3)
+            data2.append(data4)
+            datap.append(i.province)
         # 就data存入context
-        context.update({'data': data})
+        context.update({'data1': data1})
+        context.update({'data2': data2})
+        context.update({'datap': datap})
         return JsonResponse(context, json_dumps_params={'ensure_ascii' : False})
     else:
         return JsonResponse({'status': 10022, 'message': 'query isempty'})
@@ -57,20 +65,18 @@ def Details_api(req):
     #数据为空返回错误
     if details_data == None:
         return JsonResponse({'status': 10021, 'message': 'parameter error'})
-
     data = []
     if details_data:
         for i in details_data:
-
             datas = {}
-            datas['province'] = i.province
-            datas['city'] = i.city
-            datas['confirm'] = i.confirm
-            datas['confirm_add'] = i.confirm_add
-            datas['confirm_now'] = i.confirm_now
-            datas['heal'] = i.heal
-            datas['dead'] = i.dead
-            datas['time'] = i.tme
+            datas['省市'] = i.province
+            datas['城市'] = i.city
+            datas['累计确诊']= i.confirm
+            datas['现有确诊']= i.confirm
+            datas['新增确诊']= i.confirm_add
+            datas['治愈人数']= i.heal
+            datas['死亡人数']= i.dead
+            datas['更新时间']= i.tme
             data.append(datas)
         #就data存入context
         context.update({'data': data})
@@ -80,7 +86,7 @@ def Details_api(req):
 
 
 def pie_api(req):
-    pr_data = Province.objects.all().order_by('-confirm_now')[:10]
+    pr_data = Province.objects.all().order_by('-confirm_now')
     data = []
     for i in pr_data:
         datas = {}
@@ -90,6 +96,16 @@ def pie_api(req):
     context = {'data':data}
     return JsonResponse(context, json_dumps_params={'ensure_ascii' : False})
 
-
-def map_api(req):
-    HttpResponse('hello')
+@csrf_exempt
+def bar_api(request):
+    if request.method =='POST':
+        pro = request.POST.get('pro')
+        citys = Details.objects.filter(province=pro)
+        city = []
+        confirm = []
+        for i in citys:
+            city.append(i.city)
+            confirm.append(i.confirm)
+        context = {'data1':city}
+        context.update({'data2': confirm})
+        return JsonResponse(context, json_dumps_params={'ensure_ascii' : False})

@@ -44,12 +44,19 @@ get_list();
 
 
 function get_map_data() {
+    var value = $("option:selected").val();
     $.ajax({
         url:'/province_api',
         timeout:10000,
         success:function (data) {
-            option_map.series[0].data=data.data;
-            china_map.setOption(option_map);
+            if(value==='累计确诊'){
+                option_map.series[0].data=data.data1;
+                china_map.setOption(option_map);
+            }
+            else {
+                option_map.series[0].data=data.data2;
+                china_map.setOption(option_map);
+            }
         },
         error:function () {
         }
@@ -63,8 +70,7 @@ function get_pie_data() {
         url:'/pie_api',
         timeout:10000,
         success:function (data) {
-            console.log(data);
-            option_pie.series[0].data=data.data;
+            option_pie.series[0].data=data.data.slice(0,10);
             option_pie.legend.data = data.data.name;
             pie.setOption(option_pie);
         },
@@ -73,3 +79,56 @@ function get_pie_data() {
     })
 }
 get_pie_data();
+
+function get_bar_first() {
+    $.ajax({
+        url : '/bar_api',
+        type : 'POST',
+        data:{ pro:'湖北' },
+        success:function (data) {
+            console.log(data);
+            city = data.data1;
+            con = data.data2;
+            option_bar.xAxis.data = city;
+            option_bar.series[0].data = con;
+            bar.setOption(option_bar);
+        }
+
+    })
+}
+get_bar_first();
+
+
+function get_option() {
+    $.ajax({
+        url:'/province_api',
+        type:'GET',
+        success:function (data) {
+            provs = data.datap;
+            for(var i=0; i<provs.length; i++) {
+                var optionString = "";
+                optionString += "<option>" + provs[i] + "</option>";
+                $("#select2").append(optionString);
+                }
+            }
+    })
+}
+get_option();
+
+function get_bar_data() {
+    var value = $("#select2").val();
+    $.ajax({
+        url : '/bar_api',
+        type : 'POST',
+        data:{ pro:value },
+        success:function (data) {
+            console.log(data);
+            city = data.data1;
+            con = data.data2;
+            option_bar.xAxis.data = city;
+            option_bar.series[0].data = con;
+            bar.setOption(option_bar);
+        }
+
+    })
+}

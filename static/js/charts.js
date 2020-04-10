@@ -31,7 +31,7 @@ var option_map = {
     },
     "title": [
         {
-            "text": "全国累计确诊人数分布图",
+            "text": "全国确诊人数分布图",
             "left": "center",
             "padding": 5,
             "itemGap": 10
@@ -96,7 +96,7 @@ var pie = echarts.init(document.getElementById('pie'),'white',{renderer: 'canvas
 var option_pie = {
     title: {
         text: '现有确诊',
-        subtext: '前十',
+        subtext: 'TOP10',
         left: 'center'
     },
     tooltip: {
@@ -125,5 +125,78 @@ var option_pie = {
             },
             data: []
         },
+    ]
+};
+
+
+var bar = echarts.init(document.getElementById('bar'),'white',{renderer:'canvas'});
+
+option_bar = {
+    title: {
+        text: '各地区疫情确诊情况',
+        subtext: '',
+        left: 'center'
+    },
+    tooltip: {
+        formatter: '{b} : {c}'
+    },
+    xAxis: {
+        data:[],
+        axisLabel: {
+            inside: true,
+            textStyle: {
+                color: '#000',
+
+            }
+        },
+        axisTick: {
+            show: false
+        },
+        axisLine: {
+            show: false
+        },
+        z: 10
+    },
+    yAxis: {
+
+        axisLine: {
+            show: false
+        },
+        axisTick: {
+            show: false
+        },
+        axisLabel: {
+            textStyle: {
+                color: '#999'
+            }
+        }
+    },
+    series: [
+        {
+            type: 'bar',
+            itemStyle: {
+                color: new echarts.graphic.LinearGradient(
+                    0, 0, 0, 1,
+                    [
+                        {offset: 0, color: '#83bff6'},
+                        {offset: 0.5, color: '#188df0'},
+                        {offset: 1, color: '#188df0'}
+                    ]
+                )
+            },
+            emphasis: {
+                itemStyle: {
+                    color: new echarts.graphic.LinearGradient(
+                        0, 0, 0, 1,
+                        [
+                            {offset: 0, color: '#2378f7'},
+                            {offset: 0.7, color: '#2378f7'},
+                            {offset: 1, color: '#83bff6'}
+                        ]
+                    )
+                }
+            },
+            data: []
+        }
     ]
 };

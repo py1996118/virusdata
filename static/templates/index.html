@@ -10,8 +10,8 @@
 </head>
 
 <body>
-<h1 style=height:20px;width:96%;text-align:center;">疫情数据</h1>
-<div id="container" style="height:80px;width:96%;text-align:center;">
+<h1 style=height:20px;width:100%;text-align:center;">疫情数据</h1>
+<div id="container" style="height:80px;width:100%;text-align:center;">
     <div class="icbar_Confirm" style="background-color:brown;height:80px;width:16%;float:left;">
         <div class="add">较上日<span class="number"></span></div>
         <div class="number"></div>
@@ -37,17 +37,37 @@
         <div class="number"></div>
         <div class="text">无症状感染者</div>
     </div>
-    <div class="icbar_import" style="background-color:ghostwhite;height:80px;width:16%;float:left;">
+    <div class="icbar_import" style="background-color:ghostwhite;height:80px;width:20%;float:left;">
         <div class="add">较上日<span class="number"></span></div>
         <div class="number"></div>
         <div class="text">境外输入</div>
     </div>
+</div>
+<div id="container" style="height:20px;width:48%;text-align:center;">
+    <label>
+        <select id="select" onchange="get_map_data()" style="width:80px; height:20px;float:right;">
+        <option id = data1>累计确诊</option>
+        <option id = data2>现有确诊</option>
+    </select>
+    </label>
+</div>
+<div>
     <div id="map" class="chart-container" style="width:48%; height:580px;float:left;"></div>
     <div id="pie" class="pie-container" style="width:48%; height:580px;float:left;"></div>
-    <h1 style=height:20px;width:96%;text-align:center;>数据列表</h1>
-    <ul class='list'></ul>
 </div>
-
+<div id="container" style="height:20px;width:48%;text-align:center;">
+    <label>
+        <select id="select2" onchange="get_bar_data()" style="width:80px; height:20px;float:right;">
+            <option>湖北</option>
+        </select>
+    </label>
+</div>
+<div>
+    <div id="bar" class="bar-container" style="width:100%; height:500px;float:left;"></div>
+</div>
+<div id="container" style="bottom: auto; float: left">
+    <ul class='list' style="bottom: auto; float: left"></ul>
+</div>
     <script src="{% static 'js/charts.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
 </body>
